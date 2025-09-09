@@ -1,0 +1,14 @@
+[project]
+name = "api-roman"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dotenv>=0.9.9",
+    "fastapi>=0.116.1",
+    "psycopg>=3.2.9",
+    "uvicorn>=0.35.0",
+    "cli-roman @ git+https://github.com/nicolasjabot/roman-number-converter.git@master",
+    "sqlalchemy>=2.0.43",
+]

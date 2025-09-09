@@ -1,0 +1,57 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  docker up:
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - docker compose up
+
+  docker down:
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - docker compose down
+
+
+  terraform init:
+    dir: '{{.USER_WORKING_DIR}}/terraform'
+    desc: Initialize Terraform
+    cmds:
+      - terraform init
+
+  terraform plan:
+    dir: '{{.USER_WORKING_DIR}}/terraform'
+    desc: Run terraform plan
+    deps: [init]
+    cmds:
+      - terraform plan -out=tfplan
+
+  terraform apply:
+    dir: '{{.USER_WORKING_DIR}}/terraform'
+    desc: Apply terraform changes
+    deps: [init]
+    cmds:
+      - terraform apply tfplan
+
+  terraform destroy:
+    dir: '{{.USER_WORKING_DIR}}/terraform'
+    desc: Destroy all Terraform-managed infrastructure
+    deps: [init]
+    cmds:
+      - terraform destroy -auto-approve
+
+  terraform deploy:
+    dir: '{{.USER_WORKING_DIR}}/terraform'
+    desc: Run plan then apply
+    cmds:
+      - task: plan
+      - task: apply

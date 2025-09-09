@@ -1,0 +1,6 @@
+bucket_name = "nico-ae-bucket"
+location = "europe-west4"
+db_password = "changeme123!"
+db_user     = "appuser"
+db_name     = "roman_db"
+registry = "ae-2025-registry"
