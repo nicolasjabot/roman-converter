@@ -1,0 +1,86 @@
+name: PR CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  conventional-commits:
+    name: Conventional Commit check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: wagoid/commitlint-github-action@v6
+
+  lint:
+    name: Code Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          pip install ruff
+      - name: Run lint
+        run: ruff check .
+
+  format:
+    name: Code Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          pip install ruff
+      - name: Check formatting
+        run: ruff format --check .
+
+  docker:
+    name: Docker Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        run: docker compose up
+      - name: Test Docker image
+        run: docker compose run --rm app pytest
+
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          pip install pytest
+          pip install -e .
+      - name: Run unit tests
+        run: pytest tests/unit/
+
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+    needs: [docker]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          pip install pytest requests
+          pip install -e .
+      - name: Run API tests
+        run: pytest tests/api/

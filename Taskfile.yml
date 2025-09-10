@@ -11,16 +11,15 @@ tasks:
       - echo "{{.GREETING}}"
     silent: true
 
-  docker up:
+  up:
     dir: '{{.USER_WORKING_DIR}}'
     cmds:
       - docker compose up
 
-  docker down:
+  down:
     dir: '{{.USER_WORKING_DIR}}'
     cmds:
       - docker compose down
-
 
   terraform init:
     dir: '{{.USER_WORKING_DIR}}/terraform'
