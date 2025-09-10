@@ -43,7 +43,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t roman-api:latest .
       - name: Test Docker image
-        run: docker run --rm \
+        run: docker run --rm 
                roman-api:latest pytest
 
 
