@@ -48,6 +48,9 @@ jobs:
   #     IMAGE_NAME: roman-api
   docker:
     runs-on: ubuntu-latest
+    env:
+      GCP_REGION: ${{ vars.GCP_REGION }}
+      PROJECT_ID: ${{ vars.PROJECT_ID }}
     steps:
       - uses: actions/checkout@v4
 
