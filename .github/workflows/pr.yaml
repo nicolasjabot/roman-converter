@@ -40,7 +40,7 @@ jobs:
         run: |
           pip install ruff
       - name: Check formatting
-        run: ruff format --check .
+        run: ruff format roman-converter/src --check .
 
   docker:
     name: Docker Build & Test
