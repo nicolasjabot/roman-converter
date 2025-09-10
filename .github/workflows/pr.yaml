@@ -43,7 +43,7 @@ jobs:
       - name: Build Docker image
         run: docker compose build     
       - name: Test Docker image
-        run: docker compose run --rm app pytest
+        run: docker compose run --rm roman_api pytest
 
   unit-tests:
     name: Unit Tests
