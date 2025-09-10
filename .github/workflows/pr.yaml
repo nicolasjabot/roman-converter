@@ -41,9 +41,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker compose build     
+        run: docker build -t roman-api:latest .
       - name: Test Docker image
-        run: docker compose run --rm roman_api pytest
+        run: docker run --rm \
+               roman-api:latest pytest
+
 
   unit-tests:
     name: Unit Tests
