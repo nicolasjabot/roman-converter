@@ -73,7 +73,7 @@ jobs:
     
       - name: Build Docker image
         run: |
-          IMAGE="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/{{ env.REPO }}/{{ env.IMAGE_NAME }}:$TAG"
+          IMAGE="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.IMAGE_NAME }}:$TAG"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
 
