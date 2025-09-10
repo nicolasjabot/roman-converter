@@ -51,6 +51,7 @@ jobs:
     env:
       GCP_REGION: ${{ vars.GCP_REGION }}
       PROJECT_ID: ${{ vars.PROJECT_ID }}
+      IMAGE_NAME: roman-api
     steps:
       - uses: actions/checkout@v4
 
@@ -71,7 +72,7 @@ jobs:
     
       - name: Build Docker image
         run: |
-          IMAGE="$REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$IMAGE_NAME:$TAG"
+          IMAGE="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/$REPO/{{ env.IMAGE_NAME }}:$TAG"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
 
