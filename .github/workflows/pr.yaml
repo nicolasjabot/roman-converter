@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GCP_REGION: ${{ vars.GCP_REGION }}
-      PROJECT_ID: ${{ vars.PROJECT_ID }}
+      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
       IMAGE_NAME: roman-api
       REPO: nico-roman-converter
     steps:
