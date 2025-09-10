@@ -52,6 +52,7 @@ jobs:
       GCP_REGION: ${{ vars.GCP_REGION }}
       PROJECT_ID: ${{ vars.PROJECT_ID }}
       IMAGE_NAME: roman-api
+      REPO: nico-roman-converter
     steps:
       - uses: actions/checkout@v4
 
@@ -72,7 +73,7 @@ jobs:
     
       - name: Build Docker image
         run: |
-          IMAGE="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/$REPO/{{ env.IMAGE_NAME }}:$TAG"
+          IMAGE="${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/{{ env.REPO }}/{{ env.IMAGE_NAME }}:$TAG"
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
 
