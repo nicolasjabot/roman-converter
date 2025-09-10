@@ -58,6 +58,6 @@ jobs:
       - name: Build Docker image
         run: |
           IMAGE=${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/roman-repo/roman-api:pr-${{ github.event.number }}
-          docker build -t roman-api:latest .
-          docker push roman-api:latest
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
 
