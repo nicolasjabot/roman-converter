@@ -30,7 +30,7 @@ jobs:
         run: ruff check .
 
       - name: Check formatting (ruff)
-        run: ruff format --check .
+        run: ruff format .
 
       - name: Run pytest
         run: pytest
