@@ -35,19 +35,30 @@ jobs:
       - name: Run pytest
         run: pytest
 
-  # docker:
-  #   name: Docker Build & Test
-  #   env:
-  #     DB_HOST: ${{ secrets.DB_HOST }}
-  #     DB_PORT: ${{ secrets.DB_PORT }}
-  #     DB_NAME: ${{ secrets.DB_NAME }}
-  #     DB_USER: ${{ secrets.DB_USER }}
-  #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Build Docker image
-  #       run: docker build -t roman-api:latest .
-  #     - name: Push docker image to repository
-  #       run: nvjenvierbv
+  docker:
+    name: Docker Build & Test
+    env:
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Configure Docker for GAR
+        run: gcloud auth configure-docker ${{ vars.GCP_REGION }}-docker.pkg.dev --quiet
+
+      - name: Build Docker image
+        run: |
+          IMAGE=${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/roman-repo/roman-api:pr-${{ github.event.number }}
+          docker build -t roman-api:latest .
+          docker push roman-api:latest
 
