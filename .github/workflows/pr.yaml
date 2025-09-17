@@ -71,13 +71,7 @@ jobs:
     name: Terraform
     runs-on: ubuntu-latest
     env:
-      TF_VAR_db_user: ${{ secrets.DB_USER }}
-      TF_VAR_db_name: ${{ secrets.DB_NAME }}
-      TF_VAR_db_password: ${{ secrets.DB_PASSWORD }}
-      TF_VAR_db_port: ${{ secrets.DB_PORT }}           # only if your TF uses var.db_port
-      TF_VAR_location: ${{ vars.GCP_REGION }}
-      TF_VAR_bucket_name: ${{ secrets.BUCKET_NAME }}
-      TF_VAR_registry: ${{ secrets.REGISTERY }} 
+
     steps:
       - uses: actions/checkout@v4
 
@@ -96,6 +90,14 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -input=false -no-color
         working-directory: ./terraform
+        with:
+          db_user: ${{ secrets.DB_USER }}
+          db_name: ${{ secrets.DB_NAME }}
+          db_password: ${{ secrets.DB_PASSWORD }}
+          db_port: ${{ secrets.DB_PORT }}
+          location: ${{ secrets.LOCATION }}
+          bucket_name: ${{ secrets.BUCKET_NAME }}
+          registry: ${{ secrets.REGISTERY }} 
 
 
 
