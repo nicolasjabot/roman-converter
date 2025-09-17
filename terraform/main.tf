@@ -73,11 +73,6 @@ resource "google_cloud_run_v2_service" "roman-api" {
     }
 
     env {
-      name  = "DB_PORT"
-      value = var.db_port
-    }
-
-    env {
       name  = "DB_PASSWORD"
       value = google_sql_user.users.password
     }
