@@ -70,7 +70,6 @@ jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    env:
 
     steps:
       - uses: actions/checkout@v4
