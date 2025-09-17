@@ -5,15 +5,6 @@ provider "google" {
   region      = "europe-west4"
 }
 
-###storage bucket###
-resource "google_storage_bucket" "nico-ae-bucket" {
-  name          = var.bucket_name
-  location      = var.location
-  force_destroy = true
-
-  public_access_prevention = "enforced"
-}
-
 ###docker image###
 data "google_artifact_registry_docker_image" "my_image" {
   location      = var.location
@@ -31,6 +22,13 @@ resource "google_sql_database_instance" "nico-db" {
     settings {
         tier = "db-custom-1-3840"
     }
+}
+
+### db user###
+resource "google_sql_user" "users" {
+  name     = var.db_user
+  instance = google_sql_database_instance.nico-db.name
+  password = var.db_password
 }
 
 ###roman db###
@@ -62,12 +60,12 @@ resource "google_cloud_run_v2_service" "roman-api" {
 
     env {
       name  = "DB_USER"
-      value = var.db_user
+      value = google_sql_user.users.name
     }
 
     env {
       name  = "DB_PASSWORD"
-      value = var.db_password
+      value = google_sql_user.users.password
     }
 
     env {
@@ -75,16 +73,6 @@ resource "google_cloud_run_v2_service" "roman-api" {
       value = google_sql_database.roman_database.name
     }
 
-    env {
-      name  = "BUCKET_URL"
-      value = google_storage_bucket.nico-ae-bucket.url
-    }
-
-      
-      env {
-        name  = "BUCKET_URL"
-        value = google_storage_bucket.nico-ae-bucket.url
-      }
     }
   }
 }
