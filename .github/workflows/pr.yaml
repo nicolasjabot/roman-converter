@@ -97,6 +97,10 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -input=false -no-color
         working-directory: ./terraform
+        
+      - name: Terraform Apply
+        run: terraform apply -input=false -auto-approve
+        working-directory: ./terraform
 
 
 
