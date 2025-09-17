@@ -70,6 +70,14 @@ jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
+    env:
+      db_user: ${{ secrets.DB_USER }}
+      db_name: ${{ secrets.DB_NAME }}
+      db_password: ${{ secrets.DB_PASSWORD }}
+      location: ${{ vars.GCP_REGION }}
+      bucket_name: ${{ secrets.BUCKET_NAME }}
+      db_port: ${{ secrets.DB_PORT }}
+      registry: ${{ secrets.REGISTERY }}
     steps:
       - uses: actions/checkout@v4
 
