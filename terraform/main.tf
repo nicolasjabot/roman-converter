@@ -33,6 +33,13 @@ resource "google_sql_database_instance" "nico-db" {
     }
 }
 
+### db user###
+resource "google_sql_user" "users" {
+  name     = var.db_user
+  instance = google_sql_database_instance.nico-db.name
+  password = var.db_password
+}
+
 ###roman db###
 resource "google_sql_database" "roman_database" {
     name     = "roman_db"
@@ -62,12 +69,17 @@ resource "google_cloud_run_v2_service" "roman-api" {
 
     env {
       name  = "DB_USER"
-      value = var.db_user
+      value = google_sql_user.users.name
+    }
+
+    env {
+      name  = "DB_PORT"
+      value = var.db_port
     }
 
     env {
       name  = "DB_PASSWORD"
-      value = var.db_password
+      value = google_sql_user.users.password
     }
 
     env {
@@ -80,11 +92,6 @@ resource "google_cloud_run_v2_service" "roman-api" {
       value = google_storage_bucket.nico-ae-bucket.url
     }
 
-      
-      env {
-        name  = "BUCKET_URL"
-        value = google_storage_bucket.nico-ae-bucket.url
-      }
     }
   }
 }

@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Query
 from sqlalchemy import text
 from roman import roman_to_int_logic, int_to_roman_logic
 from errors import RomanFormatError, ArabicRangeError, NumberError
-from postgresql_db import get_connection
+from src.postgresql_db import get_connection
 
 app = FastAPI()
 
